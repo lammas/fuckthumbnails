@@ -1,0 +1,1 @@
+Images will be indexed from here. Feel free to replace this directory with a symlink.
