@@ -2,13 +2,33 @@ var express = require('express');
 var router = express.Router();
 var walk = require('walk');
 var path = require('path');
+var fs = require('fs');
 
 var config = require('../config');
+
+var dataPath = 'public/data';
+var staticPath = 'public';
 
 
 /** Index page */
 function viewIndex(req, res) {
-	res.render('index', { title: config.title });
+	var backgroundPath = '';
+	var useBackgrounds = config.use_dir_backgrounds;
+	if (useBackgrounds) {
+		var bg = req.path.replace('/g', '') + '/' + config.dir_background;
+		if (fs.existsSync(path.join(dataPath, bg))) {
+			backgroundPath = '/data' + bg;
+		}
+		else {
+			useBackgrounds = false;
+		}
+	}	
+
+	res.render('index', {
+		title: config.title,
+		use_dir_backgrounds: useBackgrounds,
+		dir_background: backgroundPath
+	});
 }
 
 
@@ -18,9 +38,6 @@ router.get('/g/*', viewIndex);
 
 /** gallery.json */
 function generateListing(req, res, callback) {
-	var dataPath = 'public/data';
-	var staticPath = 'public';
-
 	var filter = /^Thumbs.db|^\.[a-zA-Z0-9]+/;
 	var files   = {};
 
@@ -34,6 +51,9 @@ function generateListing(req, res, callback) {
 		if (stat.name.match(filter) != null) {
 			return next();
 		}
+
+		if (config.use_dir_backgrounds && stat.name == config.dir_background)
+			return next();
 
 		var dir = root.replace(dataPath, '');
 		if (dir.length==0) {

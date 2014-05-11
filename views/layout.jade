@@ -5,5 +5,5 @@ html
 		link(rel='stylesheet', href='/stylesheets/style.css')
 		script(type='text/javascript' src='/javascripts/jquery-2.1.0.min.js')
 		script(type='text/javascript' src='/javascripts/main.js')
-	body
+	body(style=use_dir_backgrounds ? "background-image: url('" + dir_background + "');" : '')
 		block content
