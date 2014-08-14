@@ -22,7 +22,7 @@ function viewIndex(req, res) {
 		else {
 			useBackgrounds = false;
 		}
-	}	
+	}
 
 	res.render('index', {
 		title: config.title,

@@ -24,19 +24,41 @@ function loadmore() {
 	}
 }
 
+function formatDate(date) {
+	return date.getFullYear() + '-' + ('0' + (date.getMonth()+1)).slice(-2) + '-' + ('0' + date.getDate()).slice(-2);
+}
+
 function menu(data) {
 	var container = $('#menu');
 
 	if (gallery != '.')
 		container.append($('<a href="/">Home</a>'));
 
+	var latest = false;
+
 	for (var item in data) {
-		if (item === '.') continue;
+		if (data[item].length == 0)
+			continue;
+
+		if (!latest)
+			latest = new Date(data[item][0].time);
+		else {
+			var d = new Date(data[item][0].time);
+			if (d>latest)
+				latest = d;
+		}
+
+		if (item === '.')
+			continue;
+
 		var link = $('<a></a>')
 			.attr('href', '/g/'+item)
 			.text(item);
 		container.append(link);
 	}
+
+	var lastModified = $('<span>').text(formatDate(latest));
+	container.append(lastModified);
 }
 
 function boot() {
