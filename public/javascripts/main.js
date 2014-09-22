@@ -55,7 +55,7 @@ function menu(data) {
 
 		var link = $('<a></a>')
 			.attr('href', '/g/'+item)
-			.text(item);
+			.text(item.replace(/_/g, ' '));
 		container.append(link);
 	}
 
