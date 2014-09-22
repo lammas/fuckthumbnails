@@ -1,7 +1,10 @@
 var offset = 0;
-var itemsPerPage = 10;
 var gallery = '.';
 var galleryData = false;
+var config = {
+	items_per_page: 10,
+	display_last_modified: true
+};
 
 function loadmore() {
 	if (!galleryData || !(gallery in galleryData))
@@ -10,11 +13,11 @@ function loadmore() {
 	var items = galleryData[gallery];
 	if (offset<items.length) {
 		var container = $('#content');
-		for (var i = offset; i < items.length && i < offset + itemsPerPage; i++) {
+		for (var i = offset; i < items.length && i < offset + config.items_per_page; i++) {
 			var image = $('<img>').attr('src', items[i].path);
 			container.append(image);
 		}
-		offset+=itemsPerPage;
+		offset+=config.items_per_page;
 	}
 
 	if (offset<items.length) {
@@ -59,7 +62,7 @@ function menu(data) {
 		container.append(link);
 	}
 
-	if (latest) {
+	if (config.display_last_modified === true && latest) {
 		var lastModified = $('<span>').text(formatDate(latest));
 		container.append(lastModified);
 	}
@@ -73,7 +76,12 @@ function boot() {
 	$('#load-more').hide();
 	$('#the-end').hide();
 	$.getJSON('/gallery.json', function (data) {
-		galleryData = data;
+		if (jQuery.isEmptyObject(data))
+			return;
+
+		config = data.config;
+		galleryData = data.gallery;
+
 		menu(galleryData);
 		loadmore();
 	});

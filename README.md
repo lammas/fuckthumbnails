@@ -22,7 +22,7 @@ $ npm start
 By default it will serve whatever is located in the `public/data/` directory.
 Feel free to replace the `data` directory with a symlink that points to some images.
 
-By default the application listens on `127.0.0.1:3000`.
+By default the application listens on `127.0.0.1:3000`. The port can be changed in `run.sh`.
 This is currently intended to be used behind something like [nginx](http://nginx.org/).
 Here's an example nginx config:
 

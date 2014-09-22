@@ -83,7 +83,14 @@ function generateListing(req, res, callback) {
 				return 0;
 			});
 		}
-		req.galleryData = files;
+
+		req.galleryData = {
+			'gallery': files,
+			'config': {
+				items_per_page: config.items_per_page,
+				display_last_modified: config.display_last_modified
+			}
+		};
 		callback();
 	});
 }
