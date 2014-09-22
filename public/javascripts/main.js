@@ -4,8 +4,10 @@ var gallery = '.';
 var galleryData = false;
 
 function loadmore() {
-	var items = galleryData[gallery];
+	if (!galleryData || !(gallery in galleryData))
+		return;
 
+	var items = galleryData[gallery];
 	if (offset<items.length) {
 		var container = $('#content');
 		for (var i = offset; i < items.length && i < offset + itemsPerPage; i++) {
