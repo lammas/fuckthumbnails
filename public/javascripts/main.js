@@ -57,8 +57,10 @@ function menu(data) {
 		container.append(link);
 	}
 
-	var lastModified = $('<span>').text(formatDate(latest));
-	container.append(lastModified);
+	if (latest) {
+		var lastModified = $('<span>').text(formatDate(latest));
+		container.append(lastModified);
+	}
 }
 
 function boot() {
